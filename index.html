@@ -122,9 +122,10 @@
     .hero h1 {
       margin: 0;
       font-family: "Space Grotesk", "IBM Plex Sans", sans-serif;
-      font-size: clamp(1.8rem, 3.2vw, 2.8rem);
+      font-size: clamp(1rem, 4vw, 2.25rem);
       line-height: 1.1;
-      max-width: 720px;
+      max-width: none;
+      white-space: nowrap;
       letter-spacing: 0.01em;
     }
 
@@ -151,59 +152,89 @@
       font-weight: 600;
     }
 
-    .grid {
-      display: grid;
-      grid-template-columns: 1.25fr 1fr;
-      gap: 1rem;
-      margin-top: 1rem;
-    }
-
-    .panel {
-      background: var(--card);
-      border: 1px solid var(--line);
+    .minimal-panel {
+      background: linear-gradient(180deg, #ffffff 0%, #eef8ff 100%);
+      border: 1px solid #bfe0fb;
       border-radius: var(--radius-lg);
       box-shadow: var(--shadow-card);
-      padding: 1.1rem;
+      padding: 1.2rem;
+      margin-top: 1rem;
+      text-align: center;
+      max-width: 760px;
+      margin-left: auto;
+      margin-right: auto;
+      position: relative;
+      overflow: hidden;
       animation: reveal-up 0.8s ease both;
     }
 
-    .panel h2 {
+    .minimal-panel::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, #0056a5, #0a7ec2, #00a6a6);
+    }
+
+    .minimal-visual {
+      width: 86px;
+      height: 86px;
+      margin: 0 auto 0.7rem;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: radial-gradient(circle at 30% 25%, #66c8ef 0%, #0a7ec2 48%, #0056a5 100%);
+      box-shadow: 0 10px 24px rgba(0, 86, 165, 0.28);
+    }
+
+    .minimal-visual span {
+      color: #ffffff;
+      font-family: "Space Grotesk", "IBM Plex Sans", sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    .minimal-panel h2 {
       margin: 0;
       font-family: "Space Grotesk", "IBM Plex Sans", sans-serif;
       font-size: 1.2rem;
       letter-spacing: 0.01em;
-      color: var(--ink-700);
+      color: #0056a5;
     }
 
-    .panel p {
-      margin: 0.55rem 0 0.9rem;
+    .minimal-panel p {
+      margin: 0.55rem 0 0;
       color: var(--ink-600);
       font-size: 0.96rem;
     }
 
-    .quick-prompts {
-      display: grid;
-      gap: 0.55rem;
-      margin-top: 0.8rem;
+    .minimal-note {
+      margin-top: 0.5rem;
+      font-size: 0.84rem;
+      color: #2f5d84;
     }
 
-    .quick-prompts button {
-      text-align: left;
-      background: #f5faff;
-      border: 1px solid #cfe2f7;
+    .minimal-points {
+      margin: 0.7rem auto 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+
+    .minimal-points li {
+      background: linear-gradient(180deg, #f4faff 0%, #e6f4ff 100%);
+      border: 1px solid #bcdcf7;
       color: #0f4e7f;
-      padding: 0.64rem 0.72rem;
-      border-radius: var(--radius-sm);
-      font: inherit;
-      font-size: 0.9rem;
-      cursor: pointer;
-      transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
-    }
-
-    .quick-prompts button:hover {
-      border-color: var(--brand-500);
-      background: #edf7ff;
-      transform: translateY(-1px);
+      border-radius: 999px;
+      padding: 0.28rem 0.62rem;
+      font-size: 0.8rem;
+      font-weight: 600;
     }
 
     .topics {
@@ -214,11 +245,23 @@
     }
 
     .topic {
-      background: linear-gradient(180deg, #ffffff, #f8fcff);
-      border: 1px solid #d9e8f8;
+      background: linear-gradient(180deg, #ffffff, #f4fbff);
+      border: 1px solid #cfe2f7;
       border-radius: var(--radius-md);
       padding: 0.82rem;
+      position: relative;
+      overflow: hidden;
       animation: reveal-up 0.9s ease both;
+    }
+
+    .topic::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, #0056a5, #00a6a6);
     }
 
     .topic h3 {
@@ -232,6 +275,14 @@
       margin: 0.45rem 0 0;
       color: var(--ink-600);
       font-size: 0.86rem;
+    }
+
+    .topic:nth-child(2)::before {
+      background: linear-gradient(90deg, #0a7ec2, #00a6a6);
+    }
+
+    .topic:nth-child(3)::before {
+      background: linear-gradient(90deg, #0056a5, #0a7ec2);
     }
 
     .topic:nth-child(1) { animation-delay: 0.05s; }
@@ -258,10 +309,6 @@
     }
 
     @media (max-width: 980px) {
-      .grid {
-        grid-template-columns: 1fr;
-      }
-
       .topics {
         grid-template-columns: 1fr 1fr;
       }
@@ -314,31 +361,18 @@
       </div>
     </section>
 
-    <section class="grid" aria-label="Cisco collaboration guidance panels">
-      <article class="panel">
-        <h2>Cisco Collaboration Portfolio Guidance</h2>
-        <p>
-          Focus this page on cisco collaboration solution positioning.
-          Use it to align licensing, use cases, and partner-delivered outcomes for account teams.
-        </p>
-        <div class="quick-prompts">
-          <button type="button">How do we position cisco collaboration value versus point collaboration tools?</button>
-          <button type="button">Which cisco collaboration capabilities are strongest for regulated industries?</button>
-          <button type="button">What partner services accelerate cisco collaboration adoption and change management?</button>
-          <button type="button">How should teams align cisco collaboration roadmap talking points for executive stakeholders?</button>
-        </div>
-      </article>
-
-      <aside class="panel">
-        <h2>Webex Contact Center Deployment Focus</h2>
-        <p>Use these prompts for specialists supporting digital customer experience programs.</p>
-        <div class="quick-prompts">
-          <button type="button">How should we position webex contact center for omnichannel service transformation?</button>
-          <button type="button">What are the best talking points for AI agent and customer self-service in webex contact center?</button>
-          <button type="button">Which partner implementation patterns reduce migration risk from legacy collaboration platforms?</button>
-          <button type="button">How do we articulate workforce optimization and analytics outcomes to operations leaders?</button>
-        </div>
-      </aside>
+    <section class="minimal-panel" aria-label="Cisco collaboration summary">
+      <div class="minimal-visual" aria-hidden="true">
+        <span>WXCC</span>
+      </div>
+      <h2>Webex Contact Center</h2>
+      <p>AI-powered customer engagement across voice and digital channels in one unified platform.</p>
+      <ul class="minimal-points" aria-label="Webex Contact Center highlights">
+        <li>Omnichannel</li>
+        <li>AI Assist</li>
+        <li>Real-time Insights</li>
+      </ul>
+      <p class="minimal-note">Simple. Unified. Ready for scale.</p>
     </section>
 
     <section class="topics" aria-label="Cisco collaboration solution areas">
@@ -356,9 +390,6 @@
       </article>
     </section>
 
-    <footer>
-      Sales Connect AI • Cisco Internal Use • Static Webpage Ready for GitHub Hosting
-    </footer>
   </main>
 
   <div id="divicw" data-bind="ad1d3326-defc-11ed-89a4-06b1006a3479" data-org="" data-guid="258bd759-a0c9-49a7-97e0-74b3f1c72d02"></div>
