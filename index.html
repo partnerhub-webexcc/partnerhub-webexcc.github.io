@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sales Connect AI | cisco collaboration</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink-900: #0d1b2a;
+      --ink-700: #1b263b;
+      --ink-600: #33415c;
+      --surface: #f7fafc;
+      --card: #ffffff;
+      --line: #dce7f5;
+      --brand-700: #0056a5;
+      --brand-500: #0a7ec2;
+      --accent-500: #00a6a6;
+      --accent-300: #9ee9e9;
+      --success-500: #0d9f6e;
+      --shadow-soft: 0 18px 48px rgba(13, 27, 42, 0.08);
+      --shadow-card: 0 8px 20px rgba(13, 27, 42, 0.07);
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --radius-sm: 9px;
+      --max-width: 1120px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+      color: var(--ink-900);
+      background:
+        radial-gradient(circle at 85% 12%, rgba(0, 166, 166, 0.15) 0, rgba(0, 166, 166, 0) 44%),
+        radial-gradient(circle at 8% 25%, rgba(10, 126, 194, 0.16) 0, rgba(10, 126, 194, 0) 42%),
+        linear-gradient(180deg, #f6fbff 0%, #eef5fc 52%, #f8fbff 100%);
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+
+    .shell {
+      width: min(100% - 2rem, var(--max-width));
+      margin: 0 auto;
+      padding: 1.25rem 0 3rem;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      font-family: "Space Grotesk", "IBM Plex Sans", sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      color: var(--ink-900);
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: conic-gradient(from 210deg, var(--brand-700), var(--accent-500));
+      color: #fff;
+      font-size: 0.9rem;
+      box-shadow: 0 8px 18px rgba(0, 86, 165, 0.35);
+    }
+
+    .status-pill {
+      border: 1px solid rgba(13, 159, 110, 0.25);
+      background: rgba(13, 159, 110, 0.08);
+      color: #0b7f58;
+      font-size: 0.82rem;
+      font-weight: 600;
+      border-radius: 999px;
+      padding: 0.32rem 0.72rem;
+      white-space: nowrap;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(145deg, rgba(0, 86, 165, 0.96), rgba(0, 166, 166, 0.88));
+      border-radius: calc(var(--radius-lg) + 2px);
+      color: #fff;
+      padding: clamp(1.5rem, 4vw, 2.7rem);
+      box-shadow: var(--shadow-soft);
+      animation: reveal-up 0.75s ease both;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: -120px;
+      bottom: -130px;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.28) 0, rgba(255, 255, 255, 0) 65%);
+      pointer-events: none;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-family: "Space Grotesk", "IBM Plex Sans", sans-serif;
+      font-size: clamp(1.8rem, 3.2vw, 2.8rem);
+      line-height: 1.1;
+      max-width: 720px;
+      letter-spacing: 0.01em;
+    }
+
+    .hero p {
+      margin: 0.85rem 0 0;
+      max-width: 700px;
+      color: rgba(245, 252, 255, 0.95);
+      font-size: clamp(1rem, 1.6vw, 1.1rem);
+    }
+
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      margin-top: 1.1rem;
+    }
+
+    .hero-tags span {
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.13);
+      padding: 0.35rem 0.65rem;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.25fr 1fr;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-card);
+      padding: 1.1rem;
+      animation: reveal-up 0.8s ease both;
+    }
+
+    .panel h2 {
+      margin: 0;
+      font-family: "Space Grotesk", "IBM Plex Sans", sans-serif;
+      font-size: 1.2rem;
+      letter-spacing: 0.01em;
+      color: var(--ink-700);
+    }
+
+    .panel p {
+      margin: 0.55rem 0 0.9rem;
+      color: var(--ink-600);
+      font-size: 0.96rem;
+    }
+
+    .quick-prompts {
+      display: grid;
+      gap: 0.55rem;
+      margin-top: 0.8rem;
+    }
+
+    .quick-prompts button {
+      text-align: left;
+      background: #f5faff;
+      border: 1px solid #cfe2f7;
+      color: #0f4e7f;
+      padding: 0.64rem 0.72rem;
+      border-radius: var(--radius-sm);
+      font: inherit;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .quick-prompts button:hover {
+      border-color: var(--brand-500);
+      background: #edf7ff;
+      transform: translateY(-1px);
+    }
+
+    .topics {
+      margin-top: 1rem;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.85rem;
+    }
+
+    .topic {
+      background: linear-gradient(180deg, #ffffff, #f8fcff);
+      border: 1px solid #d9e8f8;
+      border-radius: var(--radius-md);
+      padding: 0.82rem;
+      animation: reveal-up 0.9s ease both;
+    }
+
+    .topic h3 {
+      margin: 0;
+      font-family: "Space Grotesk", "IBM Plex Sans", sans-serif;
+      font-size: 0.98rem;
+      color: var(--ink-700);
+    }
+
+    .topic p {
+      margin: 0.45rem 0 0;
+      color: var(--ink-600);
+      font-size: 0.86rem;
+    }
+
+    .topic:nth-child(1) { animation-delay: 0.05s; }
+    .topic:nth-child(2) { animation-delay: 0.14s; }
+    .topic:nth-child(3) { animation-delay: 0.22s; }
+
+    footer {
+      margin-top: 1rem;
+      color: var(--ink-600);
+      font-size: 0.83rem;
+      text-align: center;
+      animation: reveal-up 1s ease both;
+    }
+
+    @keyframes reveal-up {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 980px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .topics {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .shell {
+        width: min(100% - 1.2rem, var(--max-width));
+        padding-top: 0.9rem;
+      }
+
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .hero {
+        padding: 1.25rem;
+      }
+
+      .topics {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark">SC</span>
+        <span>Sales Connect AI</span>
+      </div>
+      <span class="status-pill">Internal Preview</span>
+    </header>
+
+    <section class="hero" aria-labelledby="hero-title">
+      <h1 id="hero-title">Cisco collaboration intelligence hub</h1>
+      <p>
+        Get faster, clearer guidance for cisco collaboration partner solutions.
+        Built for internal teams supporting architecture, positioning, and field engagement.
+      </p>
+      <div class="hero-tags" aria-label="Key capabilities">
+        <span>cisco collaboration</span>
+        <span>Platform Positioning</span>
+        <span>Integration Guidance</span>
+        <span>Sales Enablement</span>
+      </div>
+    </section>
+
+    <section class="grid" aria-label="Cisco collaboration guidance panels">
+      <article class="panel">
+        <h2>Cisco Collaboration Portfolio Guidance</h2>
+        <p>
+          Focus this page on cisco collaboration solution positioning.
+          Use it to align licensing, use cases, and partner-delivered outcomes for account teams.
+        </p>
+        <div class="quick-prompts">
+          <button type="button">How do we position cisco collaboration value versus point collaboration tools?</button>
+          <button type="button">Which cisco collaboration capabilities are strongest for regulated industries?</button>
+          <button type="button">What partner services accelerate cisco collaboration adoption and change management?</button>
+          <button type="button">How should teams align cisco collaboration roadmap talking points for executive stakeholders?</button>
+        </div>
+      </article>
+
+      <aside class="panel">
+        <h2>Cisco Collaboration Deployment Focus</h2>
+        <p>Use these prompts for specialists supporting digital customer experience programs.</p>
+        <div class="quick-prompts">
+          <button type="button">How should we position cisco collaboration for omnichannel service transformation?</button>
+          <button type="button">What are the best talking points for AI agent and customer self-service in cisco collaboration?</button>
+          <button type="button">Which partner implementation patterns reduce migration risk from legacy collaboration platforms?</button>
+          <button type="button">How do we articulate workforce optimization and analytics outcomes to operations leaders?</button>
+        </div>
+      </aside>
+    </section>
+
+    <section class="topics" aria-label="Cisco collaboration solution areas">
+      <article class="topic">
+        <h3>Cisco Collaboration Core</h3>
+        <p>Guide teams on meetings, calling, messaging, and device-led collaboration experiences.</p>
+      </article>
+      <article class="topic">
+        <h3>Customer Experience Workflows</h3>
+        <p>Map customer needs to omnichannel engagement, automation, analytics, and agent productivity.</p>
+      </article>
+      <article class="topic">
+        <h3>Partner Delivery & Adoption</h3>
+        <p>Highlight onboarding, migration, and managed-service motions specific to cisco collaboration platforms.</p>
+      </article>
+    </section>
+
+    <footer>
+      Sales Connect AI • Cisco Internal Use • Static Webpage Ready for GitHub Hosting
+    </footer>
+  </main>
+</body>
+</html>
