@@ -311,8 +311,10 @@
       top: auto !important;
     }
 
-    /* Chat window: fill the widget area */
-    .widget-area iframe[src*="imi"] {
+    /* Chat window & containers: fill the widget area */
+    .widget-area iframe[src*="imi"],
+    .widget-area iframe[id*="imi"],
+    .widget-area iframe[id*="chat"] {
       position: absolute !important;
       inset: 0 !important;
       width: 100% !important;
@@ -323,6 +325,21 @@
       bottom: auto !important;
       border: none !important;
       border-radius: 22px !important;
+    }
+
+    .widget-area #divchatmain,
+    .widget-area .main-chat-cont,
+    .widget-area [id*="chatmain"],
+    .widget-area [class*="chat-cont"] {
+      position: absolute !important;
+      inset: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      max-width: 100% !important;
+      max-height: 100% !important;
+      margin: 0 !important;
+      border-radius: 22px !important;
+      box-shadow: none !important;
     }
 
     /* Block proactive popup: hide only the fullscreen modal overlay */
