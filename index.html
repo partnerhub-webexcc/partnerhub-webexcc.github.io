@@ -294,39 +294,34 @@
       z-index: 1;
     }
 
-    /* Force ALL IMI widget elements to stay inside .widget-area */
-    .widget-area iframe,
-    .widget-area div[style*="fixed"],
-    .widget-area div[style*="position"] {
-      position: absolute !important;
-      z-index: 10;
-    }
-
-    /* Chat bubble: anchor to bottom-right of widget area */
-    .widget-area div[style*="z-index"][style*="fixed"] {
+    /* Chat bubble: keep clickable on top */
+    .widget-area .chatbutton,
+    .widget-area [id*="chatbutton"],
+    .widget-area [class*="chatbutton"] {
       position: absolute !important;
       right: 16px !important;
       bottom: 16px !important;
       left: auto !important;
       top: auto !important;
+      z-index: 100 !important;
+      pointer-events: auto !important;
+      cursor: pointer !important;
     }
 
-    /* Chat window & containers: fill the widget area */
-    .widget-area iframe[src*="imi"],
-    .widget-area iframe[id*="imi"],
-    .widget-area iframe[id*="chat"] {
+    /* Chat window iframes: fill the widget area */
+    .widget-area iframe {
       position: absolute !important;
       inset: 0 !important;
       width: 100% !important;
       height: 100% !important;
       max-width: 100% !important;
       max-height: 100% !important;
-      right: auto !important;
-      bottom: auto !important;
       border: none !important;
       border-radius: 22px !important;
+      z-index: 10 !important;
     }
 
+    /* Chat main container: fill the widget area */
     .widget-area #divchatmain,
     .widget-area .main-chat-cont,
     .widget-area [id*="chatmain"],
@@ -340,6 +335,7 @@
       margin: 0 !important;
       border-radius: 22px !important;
       box-shadow: none !important;
+      z-index: 50 !important;
     }
 
     /* Block proactive popup: hide only the fullscreen modal overlay */
