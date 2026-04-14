@@ -294,16 +294,34 @@
       z-index: 1;
     }
 
-    /* Override IMI widget to embed inline instead of fixed overlay */
+    /* Force ALL IMI widget elements to stay inside .widget-area */
     .widget-area iframe,
-    .widget-area .imichat-iframe,
-    .widget-area [id*="imi"] iframe {
+    .widget-area div[style*="fixed"],
+    .widget-area div[style*="position"] {
+      position: absolute !important;
+      z-index: 10;
+    }
+
+    /* Chat bubble: anchor to bottom-right of widget area */
+    .widget-area div[style*="z-index"][style*="fixed"] {
+      position: absolute !important;
+      right: 16px !important;
+      bottom: 16px !important;
+      left: auto !important;
+      top: auto !important;
+    }
+
+    /* Chat window / proactive message: fill the widget area */
+    .widget-area iframe {
       position: absolute !important;
       inset: 0 !important;
       width: 100% !important;
       height: 100% !important;
+      max-width: 100% !important;
+      max-height: 100% !important;
       right: auto !important;
       bottom: auto !important;
+      border: none !important;
       border-radius: 22px !important;
     }
 
@@ -418,6 +436,41 @@
 
     <footer>Cisco Seller Workspace &bull; Ecosystem Partner Matching Assistant &bull; Internal Use</footer>
   </main>
+
+  <script>
+    // Capture all IMI-injected elements and move them inside widget-area
+    (function() {
+      var widgetArea = document.querySelector('.widget-area');
+      var observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(m) {
+          m.addedNodes.forEach(function(node) {
+            if (node.nodeType !== 1) return;
+            // Move any IMI-related elements into widget-area
+            var isIMI = (node.id && node.id.toLowerCase().indexOf('imi') !== -1) ||
+                        (node.className && typeof node.className === 'string' && node.className.toLowerCase().indexOf('imi') !== -1) ||
+                        (node.tagName === 'IFRAME' && node.src && node.src.indexOf('imi') !== -1);
+            if (isIMI && !widgetArea.contains(node)) {
+              widgetArea.appendChild(node);
+            }
+            // Also override any fixed positioning on child elements
+            if (node.style && node.style.position === 'fixed') {
+              node.style.position = 'absolute';
+            }
+          });
+        });
+      });
+      observer.observe(document.body, { childList: true, subtree: true });
+
+      // Periodically fix any fixed-positioned elements inside widget-area
+      setInterval(function() {
+        widgetArea.querySelectorAll('*').forEach(function(el) {
+          if (el.style.position === 'fixed') {
+            el.style.position = 'absolute';
+          }
+        });
+      }, 500);
+    })();
+  </script>
 
   <script>
     var i = {
