@@ -311,8 +311,8 @@
       top: auto !important;
     }
 
-    /* Chat window / proactive message: fill the widget area */
-    .widget-area iframe {
+    /* Chat window: fill the widget area */
+    .widget-area iframe[src*="imi"] {
       position: absolute !important;
       inset: 0 !important;
       width: 100% !important;
@@ -323,6 +323,45 @@
       bottom: auto !important;
       border: none !important;
       border-radius: 22px !important;
+    }
+
+    /* Hide IMI proactive engagement popup — target all common IMI popup selectors */
+    div[id*="proactive"],
+    div[class*="proactive"],
+    div[class*="Proactive"],
+    div[id*="engagement"],
+    div[class*="engagement"],
+    div[id*="icw_proactive"],
+    div[id*="icw-proactive"],
+    div[id*="icwProactive"],
+    div[class*="icw_proactive"],
+    div[class*="icw-proactive"],
+    div[class*="icwProactive"],
+    div[id*="notify"],
+    div[class*="notify"],
+    div[id*="Notify"],
+    div[class*="Notify"] {
+      display: none !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+      width: 0 !important;
+      height: 0 !important;
+    }
+
+    /* Hide the proactive popup iframe (smaller overlay, not the main chat) */
+    .widget-area iframe + iframe,
+    .widget-area iframe[style*="394px"],
+    .widget-area iframe[style*="350px"],
+    .widget-area iframe[style*="300px"],
+    .widget-area iframe[style*="208px"],
+    iframe[id*="proactive"],
+    iframe[id*="engagement"],
+    iframe[id*="notify"] {
+      display: none !important;
+      visibility: hidden !important;
+      width: 0 !important;
+      height: 0 !important;
     }
 
     /* ── Footer ── */
@@ -461,14 +500,59 @@
       });
       observer.observe(document.body, { childList: true, subtree: true });
 
-      // Periodically fix any fixed-positioned elements inside widget-area
+      // Periodically fix positioning and hide proactive popups
       setInterval(function() {
         widgetArea.querySelectorAll('*').forEach(function(el) {
           if (el.style.position === 'fixed') {
             el.style.position = 'absolute';
           }
         });
-      }, 500);
+
+        // Hide ALL iframes except the main chat iframe (keep only the largest / first chat one)
+        var iframes = widgetArea.querySelectorAll('iframe');
+        var mainChatFound = false;
+        iframes.forEach(function(iframe) {
+          var src = iframe.src || '';
+          // The main chat iframe is typically the livechat one
+          if (!mainChatFound && src.indexOf('imi') !== -1 && src.indexOf('livechat') !== -1) {
+            mainChatFound = true; // keep this one visible
+          } else if (src.indexOf('imi') !== -1 && src.indexOf('livechat') === -1) {
+            // This is likely the proactive popup iframe
+            iframe.style.display = 'none';
+            iframe.style.visibility = 'hidden';
+            iframe.style.width = '0';
+            iframe.style.height = '0';
+          }
+        });
+
+        // Hide any divs that look like proactive popup containers
+        widgetArea.querySelectorAll('div').forEach(function(el) {
+          if (el.id === 'divicw') return; // keep the widget container
+          var id = (el.id || '').toLowerCase();
+          var cls = (typeof el.className === 'string' ? el.className : '').toLowerCase();
+          var text = el.innerText || '';
+          if (id.indexOf('proactive') !== -1 || id.indexOf('engagement') !== -1 ||
+              id.indexOf('notify') !== -1 || cls.indexOf('proactive') !== -1 ||
+              cls.indexOf('engagement') !== -1 || cls.indexOf('notify') !== -1 ||
+              text.indexOf('msg header') !== -1 || text.indexOf('CHAT NOW') !== -1) {
+            el.style.display = 'none';
+            el.style.visibility = 'hidden';
+          }
+        });
+
+        // Also catch proactive popups outside widget-area
+        document.querySelectorAll('body > div, body > iframe').forEach(function(el) {
+          if (el.closest('.shell')) return;
+          var id = (el.id || '').toLowerCase();
+          var cls = (typeof el.className === 'string' ? el.className : '').toLowerCase();
+          var style = el.getAttribute('style') || '';
+          // If it's a fixed/absolute positioned element injected by IMI outside our layout
+          if ((style.indexOf('fixed') !== -1 || style.indexOf('absolute') !== -1) &&
+              (style.indexOf('z-index') !== -1)) {
+            el.style.display = 'none';
+          }
+        });
+      }, 300);
     })();
   </script>
 
