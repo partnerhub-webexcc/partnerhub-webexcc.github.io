@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sales Connect AI | Cisco Collaboration</title>
+  <title>Cisco Seller Partner Match</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet" />
@@ -137,31 +137,7 @@
       color: var(--text-muted);
     }
 
-    .nav-pills {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
 
-    .nav-pill {
-      padding: 7px 14px;
-      border-radius: 999px;
-      font-size: 0.78rem;
-      font-weight: 800;
-      white-space: nowrap;
-      border: none;
-      cursor: default;
-    }
-
-    .nav-pill--status {
-      background: rgba(17, 132, 91, 0.12);
-      color: var(--success);
-    }
-
-    .nav-pill--version {
-      background: rgba(15, 98, 254, 0.08);
-      color: var(--cisco-blue);
-    }
 
     /* ── Hero ── */
     .hero {
@@ -178,14 +154,7 @@
       flex-shrink: 0;
     }
 
-    .hero__row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 24px;
-    }
 
-    .hero__text { flex: 1; }
 
     .hero h1 {
       font-size: clamp(1.6rem, 3vw, 2.4rem);
@@ -217,50 +186,41 @@
       font-weight: 700;
     }
 
-    .hero__badge {
-      flex-shrink: 0;
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      background: linear-gradient(135deg, var(--cisco-blue), var(--cisco-aqua));
-      box-shadow: 0 10px 26px rgba(15, 98, 254, 0.28);
-    }
 
-    .hero__badge span {
-      color: #fff;
-      font-size: 0.78rem;
-      font-weight: 800;
-      letter-spacing: 0.04em;
-    }
 
-    /* ── Middle row: WXCC panel + 3 topics side by side ── */
-    .middle-row {
+    /* ── Center layout: cards left, widget right ── */
+    .center-layout {
       display: grid;
-      grid-template-columns: 1fr 2fr;
-      gap: 14px;
+      grid-template-columns: 320px 1fr;
+      gap: 16px;
       flex: 1;
       min-height: 0;
     }
 
-    .wxcc-panel {
+    .feature-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(15, 98, 254, 0.4) transparent;
+    }
+
+    .feature-card {
       border: 1px solid var(--cisco-border);
       background: var(--panel-bg);
       backdrop-filter: blur(14px);
       box-shadow: var(--shadow);
-      border-radius: 22px;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
+      border-radius: 20px;
+      padding: 16px 14px 14px;
       position: relative;
       overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
     }
 
-    .wxcc-panel::before {
+    .feature-card::before {
       content: "";
       position: absolute;
       inset: 0 0 auto;
@@ -268,102 +228,83 @@
       background: linear-gradient(90deg, var(--cisco-blue), var(--cisco-aqua));
     }
 
-    .wxcc-visual {
-      width: 64px;
-      height: 64px;
+    .feature-card__icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
       border-radius: 50%;
-      display: grid;
-      place-items: center;
       background: linear-gradient(135deg, var(--cisco-blue), var(--cisco-aqua));
-      box-shadow: 0 8px 16px rgba(15, 98, 254, 0.22);
-      margin-bottom: 10px;
-    }
-
-    .wxcc-visual span {
       color: #fff;
-      font-size: 0.78rem;
+      font-size: 0.65rem;
       font-weight: 800;
-      letter-spacing: 0.04em;
+      margin-bottom: 8px;
+      flex-shrink: 0;
+      letter-spacing: 0.02em;
     }
 
-    .wxcc-panel h2 {
-      font-size: 1.15rem;
+    .feature-card h3 {
+      font-size: 0.9rem;
       color: var(--cisco-ink);
+      margin: 0;
     }
 
-    .wxcc-panel > p {
-      margin-top: 6px;
+    .feature-card p {
+      margin: 4px 0 0;
       color: var(--text-muted);
-      font-size: 0.85rem;
-      line-height: 1.5;
+      font-size: 0.78rem;
+      line-height: 1.4;
     }
 
-    .wxcc-points {
-      margin: 10px 0 0;
-      padding: 0;
-      list-style: none;
+    .feature-card .tag-row {
       display: flex;
       flex-wrap: wrap;
-      justify-content: center;
-      gap: 6px;
+      gap: 4px;
+      margin-top: 6px;
     }
 
-    .wxcc-points li {
-      padding: 5px 10px;
+    .feature-card .tag-row span {
+      padding: 3px 8px;
       border-radius: 999px;
       background: rgba(15, 98, 254, 0.08);
       color: var(--cisco-blue);
-      font-size: 0.74rem;
+      font-size: 0.66rem;
       font-weight: 800;
     }
 
-    .wxcc-note {
-      margin-top: 6px;
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      font-weight: 700;
-    }
-
-    .topics {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-      min-height: 0;
-    }
-
-    .topic {
+    /* ── Right area for IMI widget ── */
+    .widget-area {
+      display: flex;
+      align-items: stretch;
+      justify-content: stretch;
+      position: relative;
       border: 1px solid var(--cisco-border);
       background: var(--panel-bg);
       backdrop-filter: blur(14px);
       box-shadow: var(--shadow);
       border-radius: 22px;
-      padding: 18px;
-      position: relative;
       overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
     }
 
-    .topic::before {
-      content: "";
-      position: absolute;
-      inset: 0 0 auto;
-      height: 4px;
-      background: linear-gradient(90deg, var(--cisco-blue), var(--cisco-aqua));
+    .widget-area #divicw {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      z-index: 1;
     }
 
-    .topic h3 {
-      margin-top: 2px;
-      font-size: 1.05rem;
-      color: var(--cisco-ink);
-    }
-
-    .topic p {
-      margin: 6px 0 0;
-      color: var(--text-muted);
-      font-size: 0.85rem;
-      line-height: 1.5;
+    /* Override IMI widget to embed inline instead of fixed overlay */
+    .widget-area iframe,
+    .widget-area .imichat-iframe,
+    .widget-area [id*="imi"] iframe {
+      position: absolute !important;
+      inset: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      right: auto !important;
+      bottom: auto !important;
+      border-radius: 22px !important;
     }
 
     /* ── Footer ── */
@@ -384,18 +325,18 @@
     @media (max-width: 900px) {
       html, body { overflow: auto; height: auto; }
       .shell { height: auto; min-height: 100vh; padding-bottom: 24px; }
-      .middle-row { grid-template-columns: 1fr; }
-      .topics { grid-template-columns: 1fr 1fr; }
+      .center-layout { grid-template-columns: 1fr; }
+      .feature-stack { flex-direction: row; overflow-x: auto; }
+      .feature-card { min-width: 220px; }
     }
 
     @media (max-width: 640px) {
       .shell { width: min(100% - 20px, 1200px); }
       .topbar { flex-direction: column; align-items: flex-start; gap: 8px; }
       .hero { border-radius: 18px; padding: 16px; }
-      .hero__row { flex-direction: column; align-items: flex-start; }
-      .hero__badge { display: none; }
-      .topics { grid-template-columns: 1fr; }
-      .wxcc-panel, .topic { border-radius: 18px; padding: 16px; }
+      .center-layout { grid-template-columns: 1fr; }
+      .feature-stack { flex-direction: column; }
+      .feature-card { border-radius: 16px; padding: 14px; }
     }
   </style>
 </head>
@@ -419,67 +360,65 @@
           </svg>
         </div>
         <div class="brand-title">
-          <span>Sales Connect AI</span>
-          <small>Collaboration Intelligence Platform</small>
+          <span>Cisco Seller Workspace</span>
+          <small>Ecosystem Partner Match</small>
         </div>
       </div>
 
     </header>
 
     <section class="hero" aria-labelledby="hero-title">
-      <div class="hero__row">
-        <div class="hero__text">
-          <p class="eyebrow">Cisco Collaboration Workspace</p>
-          <h1 id="hero-title">Collaboration Intelligence Hub</h1>
-          <p class="hero__copy">
-            Faster, clearer guidance for Cisco collaboration partner solutions &mdash;
-            dedicated positioning for Webex Contact Center programs, built for
-            architecture, positioning, and field engagement.
-          </p>
-          <div class="hero-tags" aria-label="Key capabilities">
-            <span>Cisco Collaboration</span>
-            <span>Webex Contact Center</span>
-            <span>Platform Positioning</span>
-            <span>Integration Guidance</span>
-            <span>Sales Enablement</span>
+      <p class="eyebrow">Cisco Seller Workspace</p>
+      <h1 id="hero-title">Ecosystem Partner Matching Assistant</h1>
+      <p class="hero__copy">
+        Enter a customer problem statement and surface the best-fit partner
+        solutions from the combined Cisco partner knowledge base.
+      </p>
+      <div class="hero-tags" aria-label="Key capabilities">
+        <span>Partner Matching</span>
+        <span>SolutionsPlus</span>
+        <span>Seller Enablement</span>
+        <span>Knowledge Base</span>
+        <span>AI-Scored Results</span>
+      </div>
+    </section>
+
+    <section class="center-layout">
+      <div class="feature-stack">
+        <article class="feature-card">
+          <span class="feature-card__icon">HOW</span>
+          <h3>Simple Demo Flow</h3>
+          <p>Paste the problem statement, select Find Matches, and review ranked partner recommendations.</p>
+          <div class="tag-row">
+            <span>Keyword Overlap</span>
+            <span>Vertical Fit</span>
+            <span>SolutionsPlus</span>
           </div>
-        </div>
+        </article>
+        <article class="feature-card">
+          <span class="feature-card__icon">1</span>
+          <h3>Seller Prompt</h3>
+          <p>Describe the customer challenge with optional vertical, geography, and sales stage filters.</p>
+        </article>
+        <article class="feature-card">
+          <span class="feature-card__icon">2</span>
+          <h3>AI-Scored Results</h3>
+          <p>Partners ranked by keyword overlap, customer outcome, solution details, and SolutionsPlus alignment.</p>
+        </article>
+        <article class="feature-card">
+          <span class="feature-card__icon">3</span>
+          <h3>AI Assistant</h3>
+          <p>Ask follow-up questions like &ldquo;Which partner is best for healthcare?&rdquo; or &ldquo;Compare the top two.&rdquo;</p>
+        </article>
+      </div>
+      <div class="widget-area">
+        <div id="divicw" data-bind="ad1d3326-defc-11ed-89a4-06b1006a3479" data-org="" data-guid="258bd759-a0c9-49a7-97e0-74b3f1c72d02"></div>
       </div>
     </section>
 
-    <section class="middle-row">
-      <article class="wxcc-panel" aria-label="Webex Contact Center summary">
-        <div class="wxcc-visual" aria-hidden="true"><span>WXCC</span></div>
-        <h2>Webex Contact Center</h2>
-        <p>AI-powered customer engagement across voice and digital channels in one unified platform.</p>
-        <ul class="wxcc-points" aria-label="Highlights">
-          <li>Omnichannel</li>
-          <li>AI Assist</li>
-          <li>Real-time Insights</li>
-        </ul>
-        <p class="wxcc-note">Simple. Unified. Ready for scale.</p>
-      </article>
-
-      <div class="topics" aria-label="Solution areas">
-        <article class="topic">
-          <h3>Cisco Collaboration Core</h3>
-          <p>Meetings, calling, messaging, and device-led collaboration experiences for every team.</p>
-        </article>
-        <article class="topic">
-          <h3>Webex Contact Center Workflows</h3>
-          <p>Omnichannel engagement, automation, analytics, and agent productivity mapping.</p>
-        </article>
-        <article class="topic">
-          <h3>Partner Delivery &amp; Adoption</h3>
-          <p>Onboarding, migration, and managed-service motions for Cisco collaboration platforms.</p>
-        </article>
-      </div>
-    </section>
-
-    <footer>Cisco Collaboration &bull; Webex Contact Center &bull; Sales Connect AI</footer>
+    <footer>Cisco Seller Workspace &bull; Ecosystem Partner Matching Assistant &bull; Internal Use</footer>
   </main>
 
-  <div id="divicw" data-bind="ad1d3326-defc-11ed-89a4-06b1006a3479" data-org="" data-guid="258bd759-a0c9-49a7-97e0-74b3f1c72d02"></div>
   <script>
     var i = {
       t: function () {
