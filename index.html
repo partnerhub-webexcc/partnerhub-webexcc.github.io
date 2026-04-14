@@ -294,73 +294,6 @@
       z-index: 1;
     }
 
-    /* Hide default IMI chat bubbles — we use our own button */
-    .widget-area .chatbutton,
-    .widget-area [id*="chatbutton"],
-    .widget-area [class*="chatbutton"],
-    .widget-area [class*="unreadchat"] {
-      display: none !important;
-    }
-
-    /* Custom "Click to Ask" button */
-    .ask-btn {
-      position: absolute;
-      left: 50%;
-      bottom: 24px;
-      transform: translateX(-50%);
-      z-index: 200;
-      padding: 14px 36px;
-      border: none;
-      border-radius: 999px;
-      background: linear-gradient(135deg, var(--cisco-blue), var(--cisco-aqua));
-      color: #fff;
-      font-family: "Manrope", sans-serif;
-      font-size: 0.95rem;
-      font-weight: 800;
-      letter-spacing: 0.04em;
-      cursor: pointer;
-      box-shadow: 0 8px 24px rgba(15, 98, 254, 0.35);
-      transition: transform 0.15s, box-shadow 0.15s;
-      pointer-events: auto;
-    }
-    .ask-btn:hover {
-      transform: translateX(-50%) scale(1.05);
-      box-shadow: 0 12px 32px rgba(15, 98, 254, 0.45);
-    }
-    .ask-btn.hidden {
-      display: none;
-    }
-
-    /* Chat window iframes: fill the widget area */
-    .widget-area iframe {
-      position: absolute !important;
-      inset: 0 !important;
-      width: 100% !important;
-      height: 100% !important;
-      max-width: 100% !important;
-      max-height: 100% !important;
-      border: none !important;
-      border-radius: 22px !important;
-      z-index: 10 !important;
-    }
-
-    /* Chat main container: fill the widget area */
-    .widget-area #divchatmain,
-    .widget-area .main-chat-cont,
-    .widget-area [id*="chatmain"],
-    .widget-area [class*="chat-cont"] {
-      position: absolute !important;
-      inset: 0 !important;
-      width: 100% !important;
-      height: 100% !important;
-      max-width: 100% !important;
-      max-height: 100% !important;
-      margin: 0 !important;
-      border-radius: 22px !important;
-      box-shadow: none !important;
-      z-index: 50 !important;
-    }
-
     /* Block proactive popup: hide only the fullscreen modal overlay */
     body.block-proactive #imichat-fullscreen-modal,
     body.block-proactive .imichat-fullscreen-modal {
@@ -477,7 +410,6 @@
         </article>
       </div>
       <div class="widget-area">
-        <button class="ask-btn" id="askBtn">Click to Ask</button>
         <div id="divicw" data-bind="ad1d3326-defc-11ed-89a4-06b1006a3479" data-org="" data-guid="258bd759-a0c9-49a7-97e0-74b3f1c72d02"></div>
       </div>
     </section>
@@ -495,20 +427,22 @@
     (function() {
       var widgetArea = document.querySelector('.widget-area');
 
-      // "Click to Ask" button opens the chat
-      var askBtn = document.getElementById('askBtn');
-      askBtn.addEventListener('click', function() {
+      // When user clicks anywhere in the widget area, unblock chat
+      widgetArea.addEventListener('click', function() {
         document.body.classList.remove('block-proactive');
-        // Show default IMI buttons so the chat can render
-        widgetArea.querySelectorAll('[class*="chatbutton"],[id*="chatbutton"]').forEach(function(el) {
-          el.style.setProperty('display', 'block', 'important');
-        });
-        // Simulate click on the real IMI chat button
-        var imiBtn = widgetArea.querySelector('[id*="chatbutton"], [class*="chatbutton"]');
-        if (imiBtn) imiBtn.click();
-        // Hide "Click to Ask" once chat is open
-        askBtn.classList.add('hidden');
-      });
+      }, true);
+
+      // Also listen for clicks on IMI chat button elements anywhere on page
+      document.addEventListener('click', function(e) {
+        var target = e.target;
+        if (target.closest && (
+          target.closest('#imi-chatbutton') ||
+          target.closest('.chatbutton') ||
+          target.closest('[id*="chatbutton"]')
+        )) {
+          document.body.classList.remove('block-proactive');
+        }
+      }, true);
 
       // Watch for IMI elements being added and move them into widget-area
       var observer = new MutationObserver(function(mutations) {
@@ -534,12 +468,25 @@
 
       // Fix positioning periodically
       setInterval(function() {
+        // Reposition fixed elements to absolute within widget-area
         widgetArea.querySelectorAll('*').forEach(function(el) {
           if (el.style.position === 'fixed') {
             el.style.position = 'absolute';
           }
         });
-      }, 300);
+
+        // Expand chat container to fill widget-area when open
+        var chatMain = widgetArea.querySelector('#divchatmain, .main-chat-cont');
+        if (chatMain) {
+          var rect = widgetArea.getBoundingClientRect();
+          chatMain.style.cssText += ';position:absolute!important;top:0!important;left:0!important;right:0!important;bottom:0!important;width:' + rect.width + 'px!important;height:' + rect.height + 'px!important;max-width:100%!important;max-height:100%!important;margin:0!important;border-radius:22px!important;';
+          // Also expand the iframe inside it
+          var chatIframe = chatMain.querySelector('iframe');
+          if (chatIframe) {
+            chatIframe.style.cssText += ';width:100%!important;height:100%!important;max-width:100%!important;max-height:100%!important;border:none!important;border-radius:22px!important;';
+          }
+        }
+      }, 500);
     })();
   </script>
 
