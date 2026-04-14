@@ -294,18 +294,41 @@
       z-index: 1;
     }
 
-    /* Chat bubble: keep clickable on top */
+    /* Hide default IMI chat bubbles — we use our own button */
     .widget-area .chatbutton,
     .widget-area [id*="chatbutton"],
-    .widget-area [class*="chatbutton"] {
-      position: absolute !important;
-      right: 16px !important;
-      bottom: 16px !important;
-      left: auto !important;
-      top: auto !important;
-      z-index: 100 !important;
-      pointer-events: auto !important;
-      cursor: pointer !important;
+    .widget-area [class*="chatbutton"],
+    .widget-area [class*="unreadchat"] {
+      display: none !important;
+    }
+
+    /* Custom "Click to Ask" button */
+    .ask-btn {
+      position: absolute;
+      left: 50%;
+      bottom: 24px;
+      transform: translateX(-50%);
+      z-index: 200;
+      padding: 14px 36px;
+      border: none;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--cisco-blue), var(--cisco-aqua));
+      color: #fff;
+      font-family: "Manrope", sans-serif;
+      font-size: 0.95rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(15, 98, 254, 0.35);
+      transition: transform 0.15s, box-shadow 0.15s;
+      pointer-events: auto;
+    }
+    .ask-btn:hover {
+      transform: translateX(-50%) scale(1.05);
+      box-shadow: 0 12px 32px rgba(15, 98, 254, 0.45);
+    }
+    .ask-btn.hidden {
+      display: none;
     }
 
     /* Chat window iframes: fill the widget area */
@@ -454,6 +477,7 @@
         </article>
       </div>
       <div class="widget-area">
+        <button class="ask-btn" id="askBtn">Click to Ask</button>
         <div id="divicw" data-bind="ad1d3326-defc-11ed-89a4-06b1006a3479" data-org="" data-guid="258bd759-a0c9-49a7-97e0-74b3f1c72d02"></div>
       </div>
     </section>
@@ -471,22 +495,20 @@
     (function() {
       var widgetArea = document.querySelector('.widget-area');
 
-      // When user clicks anywhere in the widget area, unblock chat
-      widgetArea.addEventListener('click', function() {
+      // "Click to Ask" button opens the chat
+      var askBtn = document.getElementById('askBtn');
+      askBtn.addEventListener('click', function() {
         document.body.classList.remove('block-proactive');
-      }, true);
-
-      // Also listen for clicks on IMI chat button elements anywhere on page
-      document.addEventListener('click', function(e) {
-        var target = e.target;
-        if (target.closest && (
-          target.closest('#imi-chatbutton') ||
-          target.closest('.chatbutton') ||
-          target.closest('[id*="chatbutton"]')
-        )) {
-          document.body.classList.remove('block-proactive');
-        }
-      }, true);
+        // Show default IMI buttons so the chat can render
+        widgetArea.querySelectorAll('[class*="chatbutton"],[id*="chatbutton"]').forEach(function(el) {
+          el.style.setProperty('display', 'block', 'important');
+        });
+        // Simulate click on the real IMI chat button
+        var imiBtn = widgetArea.querySelector('[id*="chatbutton"], [class*="chatbutton"]');
+        if (imiBtn) imiBtn.click();
+        // Hide "Click to Ask" once chat is open
+        askBtn.classList.add('hidden');
+      });
 
       // Watch for IMI elements being added and move them into widget-area
       var observer = new MutationObserver(function(mutations) {
