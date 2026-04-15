@@ -284,7 +284,7 @@
       backdrop-filter: blur(14px);
       box-shadow: var(--shadow);
       border-radius: 22px;
-      overflow: hidden;
+      overflow: visible;
     }
 
     .widget-area #divicw {
@@ -301,6 +301,16 @@
       visibility: hidden !important;
       opacity: 0 !important;
       pointer-events: none !important;
+      width: 0 !important;
+      height: 0 !important;
+    }
+
+    /* Hide IMI chat bubble — we auto-open the chat */
+    [id*="chatbutton"],
+    [class*="chatbutton"],
+    .chatbutton {
+      display: none !important;
+      visibility: hidden !important;
       width: 0 !important;
       height: 0 !important;
     }
@@ -475,23 +485,19 @@
           }
         });
 
-        // Label the IMI chat bubble with "Ask Me"
+        // Auto-open: click the IMI chat button once it appears
         var chatBtn = widgetArea.querySelector('[id*="chatbutton"], [class*="chatbutton"]');
-        if (chatBtn && !chatBtn.getAttribute('data-labeled')) {
-          chatBtn.setAttribute('data-labeled', '1');
-          chatBtn.style.cssText += ';display:flex!important;align-items:center!important;justify-content:center!important;min-width:120px!important;padding:12px 28px!important;border-radius:999px!important;font-family:Manrope,sans-serif!important;font-size:0.9rem!important;font-weight:800!important;color:#fff!important;letter-spacing:0.04em!important;cursor:pointer!important;';
-          // Clear any icon-only content and set text
-          if (!chatBtn.textContent.trim() || chatBtn.textContent.trim().length < 2) {
-            chatBtn.textContent = '';
-          }
-          // Add label if not already present
-          if (!chatBtn.querySelector('.ask-label')) {
-            var label = document.createElement('span');
-            label.className = 'ask-label';
-            label.textContent = 'Ask Me';
-            label.style.cssText = 'position:relative;z-index:10;pointer-events:none;color:#fff;font-family:Manrope,sans-serif;font-size:0.9rem;font-weight:800;letter-spacing:0.04em;';
-            chatBtn.appendChild(label);
-          }
+        if (chatBtn && !chatBtn.getAttribute('data-auto-opened')) {
+          chatBtn.setAttribute('data-auto-opened', '1');
+          // Temporarily show it so the click registers
+          chatBtn.style.setProperty('display', 'block', 'important');
+          chatBtn.style.setProperty('visibility', 'visible', 'important');
+          chatBtn.click();
+          // Hide it again after click
+          setTimeout(function() {
+            chatBtn.style.setProperty('display', 'none', 'important');
+            chatBtn.style.setProperty('visibility', 'hidden', 'important');
+          }, 100);
         }
 
         // Expand chat container to fill widget-area when open
