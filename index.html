@@ -513,8 +513,7 @@
         var chatBtn = document.querySelector('[class*="chatbutton"], [id*="chatbutton"]');
         if (chatBtn) {
           var wRect = widgetArea.getBoundingClientRect();
-          var btnW = chatBtn.offsetWidth || 60;
-          var rightVal = window.innerWidth - wRect.right + (wRect.width / 2) - (btnW / 2);
+          var rightVal = window.innerWidth - wRect.right + (wRect.width / 2) - 30;
           var bottomVal = window.innerHeight - wRect.bottom + 30;
           chatBtn.style.cssText += ';position:fixed!important;right:' + rightVal + 'px!important;bottom:' + bottomVal + 'px!important;left:auto!important;top:auto!important;z-index:9999!important;';
         }
