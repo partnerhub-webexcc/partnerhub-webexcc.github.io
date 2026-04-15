@@ -305,16 +305,6 @@
       height: 0 !important;
     }
 
-    /* Hide IMI chat bubble — we auto-open the chat */
-    [id*="chatbutton"],
-    [class*="chatbutton"],
-    .chatbutton {
-      display: none !important;
-      visibility: hidden !important;
-      width: 0 !important;
-      height: 0 !important;
-    }
-
     /* ── Footer ── */
     footer {
       flex-shrink: 0;
@@ -455,6 +445,7 @@
       }, true);
 
       // Watch for IMI elements being added and move them into widget-area
+      var autoOpened = false;
       var observer = new MutationObserver(function(mutations) {
         mutations.forEach(function(m) {
           m.addedNodes.forEach(function(node) {
@@ -471,6 +462,18 @@
             if (node.style && node.style.position === 'fixed') {
               node.style.position = 'absolute';
             }
+            // Auto-open: when chatbutton appears, click it after a short delay
+            if (!autoOpened && (cls.indexOf('chatbutton') !== -1 || id.indexOf('chatbutton') !== -1)) {
+              autoOpened = true;
+              document.body.classList.remove('block-proactive');
+              setTimeout(function() {
+                node.click();
+                // Hide the button after opening
+                setTimeout(function() {
+                  node.style.setProperty('display', 'none', 'important');
+                }, 300);
+              }, 800);
+            }
           });
         });
       });
@@ -485,19 +488,10 @@
           }
         });
 
-        // Auto-open: click the IMI chat button once it appears
-        var chatBtn = widgetArea.querySelector('[id*="chatbutton"], [class*="chatbutton"]');
-        if (chatBtn && !chatBtn.getAttribute('data-auto-opened')) {
-          chatBtn.setAttribute('data-auto-opened', '1');
-          // Temporarily show it so the click registers
-          chatBtn.style.setProperty('display', 'block', 'important');
-          chatBtn.style.setProperty('visibility', 'visible', 'important');
-          chatBtn.click();
-          // Hide it again after click
-          setTimeout(function() {
-            chatBtn.style.setProperty('display', 'none', 'important');
-            chatBtn.style.setProperty('visibility', 'hidden', 'important');
-          }, 100);
+        // Keep chatbutton hidden after auto-open
+        if (autoOpened) {
+          var btn = widgetArea.querySelector('[id*="chatbutton"], [class*="chatbutton"]');
+          if (btn) btn.style.setProperty('display', 'none', 'important');
         }
 
         // Expand chat container to fill widget-area when open
@@ -505,7 +499,6 @@
         if (chatMain) {
           var rect = widgetArea.getBoundingClientRect();
           chatMain.style.cssText += ';position:absolute!important;top:0!important;left:0!important;right:0!important;bottom:0!important;width:' + rect.width + 'px!important;height:' + rect.height + 'px!important;max-width:100%!important;max-height:100%!important;margin:0!important;border-radius:22px!important;';
-          // Also expand the iframe inside it
           var chatIframe = chatMain.querySelector('iframe');
           if (chatIframe) {
             chatIframe.style.cssText += ';width:100%!important;height:100%!important;max-width:100%!important;max-height:100%!important;border:none!important;border-radius:22px!important;';
