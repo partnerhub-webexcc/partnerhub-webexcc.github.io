@@ -306,12 +306,14 @@
       height: 0 !important;
     }
 
-    /* Keep chatbutton invisible but clickable for auto-open */
+    /* Keep chatbutton off-screen but functional for auto-open */
     [class*="chatbutton"],
     [id*="chatbutton"],
     .chatbutton {
+      position: fixed !important;
+      left: -9999px !important;
+      top: -9999px !important;
       opacity: 0 !important;
-      pointer-events: none !important;
     }
 
     /* ── Footer ── */
@@ -486,12 +488,22 @@
           }
         });
 
-        // Auto-click the invisible chatbutton to open chat directly
+        // Auto-click the off-screen chatbutton to open chat directly
         var chatBtn = document.querySelector('[class*="chatbutton"], [id*="chatbutton"]');
         if (chatBtn && !chatBtn.getAttribute('data-auto-clicked')) {
           chatBtn.setAttribute('data-auto-clicked', '1');
           document.body.classList.remove('block-proactive');
-          chatBtn.click();
+          // Temporarily bring it back so IMI handlers fire
+          chatBtn.style.setProperty('left', '0', 'important');
+          chatBtn.style.setProperty('top', '0', 'important');
+          chatBtn.style.setProperty('pointer-events', 'auto', 'important');
+          var evt = new MouseEvent('click', { bubbles: true, cancelable: true, view: window });
+          chatBtn.dispatchEvent(evt);
+          // Move it back off-screen
+          setTimeout(function() {
+            chatBtn.style.setProperty('left', '-9999px', 'important');
+            chatBtn.style.setProperty('top', '-9999px', 'important');
+          }, 50);
         }
 
         // Expand chat container to fill widget-area when open
