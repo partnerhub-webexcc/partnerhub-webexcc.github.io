@@ -475,6 +475,25 @@
           }
         });
 
+        // Label the IMI chat bubble with "Ask Me"
+        var chatBtn = widgetArea.querySelector('[id*="chatbutton"], [class*="chatbutton"]');
+        if (chatBtn && !chatBtn.getAttribute('data-labeled')) {
+          chatBtn.setAttribute('data-labeled', '1');
+          chatBtn.style.cssText += ';display:flex!important;align-items:center!important;justify-content:center!important;min-width:120px!important;padding:12px 28px!important;border-radius:999px!important;font-family:Manrope,sans-serif!important;font-size:0.9rem!important;font-weight:800!important;color:#fff!important;letter-spacing:0.04em!important;cursor:pointer!important;';
+          // Clear any icon-only content and set text
+          if (!chatBtn.textContent.trim() || chatBtn.textContent.trim().length < 2) {
+            chatBtn.textContent = '';
+          }
+          // Add label if not already present
+          if (!chatBtn.querySelector('.ask-label')) {
+            var label = document.createElement('span');
+            label.className = 'ask-label';
+            label.textContent = 'Ask Me';
+            label.style.cssText = 'position:relative;z-index:10;pointer-events:none;color:#fff;font-family:Manrope,sans-serif;font-size:0.9rem;font-weight:800;letter-spacing:0.04em;';
+            chatBtn.appendChild(label);
+          }
+        }
+
         // Expand chat container to fill widget-area when open
         var chatMain = widgetArea.querySelector('#divchatmain, .main-chat-cont');
         if (chatMain) {
