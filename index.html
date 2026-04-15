@@ -319,15 +319,9 @@
       max-width: 320px;
     }
 
-    /* Block proactive popup: hide modal overlay and proactive messages */
+    /* Block proactive popup: hide only the fullscreen modal overlay */
     body.block-proactive #imichat-fullscreen-modal,
-    body.block-proactive .imichat-fullscreen-modal,
-    body.block-proactive [class*="proactive"],
-    body.block-proactive [id*="proactive"],
-    body.block-proactive [class*="unreadchat"],
-    body.block-proactive [id*="unreadchat"],
-    body.block-proactive [class*="imi-popup"],
-    body.block-proactive [class*="imichat-popup"] {
+    body.block-proactive .imichat-fullscreen-modal {
       display: none !important;
       visibility: hidden !important;
       opacity: 0 !important;
@@ -497,10 +491,9 @@
                         (node.tagName === 'IFRAME' && node.src && node.src.indexOf('imi') !== -1);
             if (isIMI && !isChatButton && !widgetArea.contains(node)) {
               widgetArea.appendChild(node);
-              // Only change position for elements we moved into widget-area
-              if (node.style && node.style.position === 'fixed') {
-                node.style.position = 'absolute';
-              }
+            }
+            if (node.style && node.style.position === 'fixed') {
+              node.style.position = 'absolute';
             }
           });
         });
@@ -520,11 +513,7 @@
         var chatBtn = document.querySelector('[class*="chatbutton"], [id*="chatbutton"]');
         if (chatBtn) {
           var wRect = widgetArea.getBoundingClientRect();
-          var btnWidth = chatBtn.offsetWidth || 60;
-          var btnHeight = chatBtn.offsetHeight || 60;
-          var centerX = wRect.left + (wRect.width / 2) - (btnWidth / 2);
-          var centerY = wRect.top + (wRect.height * 0.65);
-          chatBtn.style.cssText += ';position:fixed!important;left:' + centerX + 'px!important;top:' + centerY + 'px!important;right:auto!important;bottom:auto!important;z-index:9999!important;';
+          chatBtn.style.cssText += ';position:fixed!important;right:' + (window.innerWidth - wRect.right + 20) + 'px!important;bottom:' + (window.innerHeight - wRect.bottom + 20) + 'px!important;left:auto!important;top:auto!important;z-index:9999!important;';
         }
 
         // Expand chat container to fill widget-area when open
