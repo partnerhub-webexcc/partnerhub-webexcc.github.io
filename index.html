@@ -284,7 +284,8 @@
       backdrop-filter: blur(14px);
       box-shadow: var(--shadow);
       border-radius: 22px;
-      overflow: visible;
+      overflow: hidden;
+      padding-bottom: 0;
     }
 
     .widget-area #divicw {
@@ -445,34 +446,23 @@
       }, true);
 
       // Watch for IMI elements being added and move them into widget-area
-      var autoOpened = false;
       var observer = new MutationObserver(function(mutations) {
         mutations.forEach(function(m) {
           m.addedNodes.forEach(function(node) {
             if (node.nodeType !== 1) return;
             var id = (node.id || '').toLowerCase();
             var cls = (typeof node.className === 'string' ? node.className : '').toLowerCase();
+            // Only move chat containers and iframes, NOT the chatbutton
+            var isChatButton = cls.indexOf('chatbutton') !== -1 || id.indexOf('chatbutton') !== -1;
             var isIMI = id.indexOf('imi') !== -1 || id === 'divchatmain' ||
-                        cls.indexOf('chatbutton') !== -1 || cls.indexOf('chat-cont') !== -1 ||
+                        cls.indexOf('chat-cont') !== -1 ||
                         cls.indexOf('unreadchat') !== -1 ||
                         (node.tagName === 'IFRAME' && node.src && node.src.indexOf('imi') !== -1);
-            if (isIMI && !widgetArea.contains(node)) {
+            if (isIMI && !isChatButton && !widgetArea.contains(node)) {
               widgetArea.appendChild(node);
             }
             if (node.style && node.style.position === 'fixed') {
               node.style.position = 'absolute';
-            }
-            // Auto-open: when chatbutton appears, click it after a short delay
-            if (!autoOpened && (cls.indexOf('chatbutton') !== -1 || id.indexOf('chatbutton') !== -1)) {
-              autoOpened = true;
-              document.body.classList.remove('block-proactive');
-              setTimeout(function() {
-                node.click();
-                // Hide the button after opening
-                setTimeout(function() {
-                  node.style.setProperty('display', 'none', 'important');
-                }, 300);
-              }, 800);
             }
           });
         });
@@ -488,10 +478,11 @@
           }
         });
 
-        // Keep chatbutton hidden after auto-open
-        if (autoOpened) {
-          var btn = widgetArea.querySelector('[id*="chatbutton"], [class*="chatbutton"]');
-          if (btn) btn.style.setProperty('display', 'none', 'important');
+        // Reposition chatbutton (left in body for IMI event handlers) into widget area visually
+        var chatBtn = document.querySelector('[class*="chatbutton"], [id*="chatbutton"]');
+        if (chatBtn && !widgetArea.contains(chatBtn)) {
+          var wRect = widgetArea.getBoundingClientRect();
+          chatBtn.style.cssText += ';position:fixed!important;right:' + (window.innerWidth - wRect.right + 16) + 'px!important;bottom:' + (window.innerHeight - wRect.bottom + 16) + 'px!important;left:auto!important;top:auto!important;z-index:9999!important;';
         }
 
         // Expand chat container to fill widget-area when open
