@@ -306,6 +306,14 @@
       height: 0 !important;
     }
 
+    /* Keep chatbutton invisible but clickable for auto-open */
+    [class*="chatbutton"],
+    [id*="chatbutton"],
+    .chatbutton {
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+
     /* ── Footer ── */
     footer {
       flex-shrink: 0;
@@ -478,11 +486,12 @@
           }
         });
 
-        // Reposition chatbutton (left in body for IMI event handlers) into widget area visually
+        // Auto-click the invisible chatbutton to open chat directly
         var chatBtn = document.querySelector('[class*="chatbutton"], [id*="chatbutton"]');
-        if (chatBtn && !widgetArea.contains(chatBtn)) {
-          var wRect = widgetArea.getBoundingClientRect();
-          chatBtn.style.cssText += ';position:fixed!important;right:' + (window.innerWidth - wRect.right + 16) + 'px!important;bottom:' + (window.innerHeight - wRect.bottom + 16) + 'px!important;left:auto!important;top:auto!important;z-index:9999!important;';
+        if (chatBtn && !chatBtn.getAttribute('data-auto-clicked')) {
+          chatBtn.setAttribute('data-auto-clicked', '1');
+          document.body.classList.remove('block-proactive');
+          chatBtn.click();
         }
 
         // Expand chat container to fill widget-area when open
