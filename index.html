@@ -319,9 +319,15 @@
       max-width: 320px;
     }
 
-    /* Block proactive popup: hide only the fullscreen modal overlay */
+    /* Block proactive popup: hide modal overlay and proactive messages */
     body.block-proactive #imichat-fullscreen-modal,
-    body.block-proactive .imichat-fullscreen-modal {
+    body.block-proactive .imichat-fullscreen-modal,
+    body.block-proactive [class*="proactive"],
+    body.block-proactive [id*="proactive"],
+    body.block-proactive [class*="unreadchat"],
+    body.block-proactive [id*="unreadchat"],
+    body.block-proactive [class*="imi-popup"],
+    body.block-proactive [class*="imichat-popup"] {
       display: none !important;
       visibility: hidden !important;
       opacity: 0 !important;
@@ -491,9 +497,10 @@
                         (node.tagName === 'IFRAME' && node.src && node.src.indexOf('imi') !== -1);
             if (isIMI && !isChatButton && !widgetArea.contains(node)) {
               widgetArea.appendChild(node);
-            }
-            if (node.style && node.style.position === 'fixed') {
-              node.style.position = 'absolute';
+              // Only change position for elements we moved into widget-area
+              if (node.style && node.style.position === 'fixed') {
+                node.style.position = 'absolute';
+              }
             }
           });
         });
