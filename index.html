@@ -295,6 +295,30 @@
       z-index: 1;
     }
 
+    .widget-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 32px;
+      z-index: 0;
+      gap: 10px;
+    }
+    .widget-placeholder h3 {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--cisco-ink);
+    }
+    .widget-placeholder p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      max-width: 320px;
+    }
+
     /* Block proactive popup: hide only the fullscreen modal overlay */
     body.block-proactive #imichat-fullscreen-modal,
     body.block-proactive .imichat-fullscreen-modal {
@@ -411,6 +435,13 @@
         </article>
       </div>
       <div class="widget-area">
+        <div class="widget-placeholder">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--cisco-blue)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+          </svg>
+          <h3>Partner Assist Bot</h3>
+          <p>Click the chat icon below to start a conversation.<br>Ask about partner solutions, verticals, or compare matches.</p>
+        </div>
         <div id="divicw" data-bind="ad1d3326-defc-11ed-89a4-06b1006a3479" data-org="" data-guid="258bd759-a0c9-49a7-97e0-74b3f1c72d02"></div>
       </div>
     </section>
