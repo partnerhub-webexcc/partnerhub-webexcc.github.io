@@ -509,11 +509,13 @@
           }
         });
 
-        // Position chatbutton inside widget area visually
+        // Position chatbutton centered horizontally in widget area
         var chatBtn = document.querySelector('[class*="chatbutton"], [id*="chatbutton"]');
         if (chatBtn) {
           var wRect = widgetArea.getBoundingClientRect();
-          chatBtn.style.cssText += ';position:fixed!important;right:' + (window.innerWidth - wRect.right + 20) + 'px!important;bottom:' + (window.innerHeight - wRect.bottom + 20) + 'px!important;left:auto!important;top:auto!important;z-index:9999!important;';
+          var btnWidth = chatBtn.offsetWidth || 60;
+          var centerX = wRect.left + (wRect.width / 2) - (btnWidth / 2);
+          chatBtn.style.cssText += ';position:fixed!important;left:' + centerX + 'px!important;right:auto!important;bottom:' + (window.innerHeight - wRect.bottom + 30) + 'px!important;top:auto!important;z-index:9999!important;';
         }
 
         // Expand chat container to fill widget-area when open
